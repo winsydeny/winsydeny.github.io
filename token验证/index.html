@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="Sydeny xi">
   <!-- Open Graph Data -->
-  <meta property="og:title" content="axios">
+  <meta property="og:title" content="token验证">
   <meta property="og:description" content="Keeping moving">
   <meta property="og:site_name" content="Sydeny">
   <meta property="og:type" content="article">
@@ -43,7 +43,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-title with-background-image">
-          <p class="title">axios</p>
+          <p class="title">token验证</p>
           <p class="subtitle"></p>
         </div>
         <div class="site-menu with-background-image">
@@ -99,14 +99,14 @@
           
           <!-- Date -->
           <span class="date-time info">On
-            <span class="date">2018-11-29</span>
+            <span class="date">2018-11-30</span>
             <span class="time">10:33:47</span>
           </span>
           
           <!--  Categories  -->
             <span class="categories info">Under 
 
-<a href="/categories/Vue/">Vue</a>
+<a href="/categories/Node/">Node</a>
 </span>
           
         </div>
@@ -122,15 +122,10 @@
         
         <!-- Post Main Content -->
         <div class="post-content">
-          <h4 id="Vue-vue-cli-3-0-项目中-axios-的请求拦截和响应拦截"><a href="#Vue-vue-cli-3-0-项目中-axios-的请求拦截和响应拦截" class="headerlink" title="Vue(vue-cli 3.0) 项目中 axios 的请求拦截和响应拦截"></a>Vue(vue-cli 3.0) 项目中 axios 的请求拦截和响应拦截</h4><a id="more"></a>
-<h2 id="Vue-vue-cli-3-0-项目中-axios-的请求拦截和响应拦截-1"><a href="#Vue-vue-cli-3-0-项目中-axios-的请求拦截和响应拦截-1" class="headerlink" title="Vue(vue-cli 3.0) 项目中 axios 的请求拦截和响应拦截"></a>Vue(vue-cli 3.0) 项目中 axios 的请求拦截和响应拦截</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>vue中使用axios，axios方法自带了interceptors(拦截器),请求和响应都可以通过这个拦截器来实现拦截，通过配置interceptors来实现<br>简单点来说就是监听请求和监听响应，当请求发出或者响应的时候我们可以准确的知道</p>
-<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
-<li>src目录下新建http.js文件，并导入axios，</li>
-<li>完成拦截器的配置后在main.js中导入http.js </li>
-<li>在main.js中通过Vue.prototype.$axios = axios 来实现在全局中使用$axios</li>
-</ol>
-<h3 id="http-js"><a href="#http-js" class="headerlink" title="http.js"></a>http.js</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 请求拦截</span><br><span class="line">axios.interceptors.request.use(config =&gt; &#123;</span><br><span class="line">        // 拦截成功 </span><br><span class="line">        return config;</span><br><span class="line">    &#125;,err =&gt; &#123;</span><br><span class="line">        //失败</span><br><span class="line">        return Promise.reject(err)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//响应拦截</span><br><span class="line">axios.interceptors.response.use(response =&gt; &#123;</span><br><span class="line">    //拦截成功</span><br><span class="line">    return response</span><br><span class="line">&#125;,err =&gt; &#123;</span><br><span class="line">    //失败</span><br><span class="line">    return Promise.reject(err);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h4 id="注-使用http-js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护"><a href="#注-使用http-js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护" class="headerlink" title="注:使用http.js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护"></a>注:使用http.js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护</h4><hr>
+          <h3 id="node-token验证"><a href="#node-token验证" class="headerlink" title="node token验证"></a>node token验证</h3><a id="more"></a>
+<p><a href="https://blog.csdn.net/djjj123456789/article/details/81980587" target="_blank" rel="noopener">详细步骤</a></p>
+<h4 id="为了开发方便，在node中我们使用passport、passport-jwt、jsonwebtoken-这个三个模块生成token，并且验证"><a href="#为了开发方便，在node中我们使用passport、passport-jwt、jsonwebtoken-这个三个模块生成token，并且验证" class="headerlink" title="为了开发方便，在node中我们使用passport、passport-jwt、jsonwebtoken 这个三个模块生成token，并且验证"></a>为了开发方便，在node中我们使用passport、passport-jwt、jsonwebtoken 这个三个模块生成token，并且验证</h4><p>通过使用passport<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passport.authenticate(&apos;jwt&apos;,&#123;session:false&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>当代码执行到上面代码的时候，它会自动寻找config下的passport，并执行在passport中的代码进而验证token是否合法</p>
 
         </div>
       </div>
