@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Sydeny xi">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Vuex">
+  <meta property="og:description" content="Keeping moving">
+  <meta property="og:site_name" content="Sydeny">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="http://yoursite.com">
+  
+    <link rel="alternate" href="/atom.xml" title="Sydeny" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Sydeny</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Vuex</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/winsydeny">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:1395854149@qq.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Sydeny xi</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-12-02</span>
+            <span class="time">10:55:40</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/vuex/">vuex</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/note/">#note</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h4 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h4><a id="more"></a>
+<h4 id="what-is-vuex"><a href="#what-is-vuex" class="headerlink" title="what is vuex?"></a>what is vuex?</h4><p>首先我们可以看看官网介绍的<a href="https://vuex.vuejs.org/zh/" target="_blank" rel="noopener">vuex</a>，对于大多数新手来说，官方文档写的很不好理解。<br>vuex顾名思义，就是为vue.js应用开发的，它是一种<strong>状态管理模式</strong>，用来管理我们的数据，当然我们也可以不用vuex来管理我们的数据，但是大型的vue应用就不可缺了<br>它的首要目标就是方便我们数据的管理和组件之间数据的传递，官方文档里所说的<strong>状态</strong>一词，我们也可以简单的理解为是数据，方法，当然这样理解还是有一点差强人意，但是起码对我这个菜鸟来说是可以更好的理解这个状态到底是什么东西？<br>我们来设想一下两个场景：</p>
+<ul>
+<li>多个视图依赖与同一种状态</li>
+<li>来自不同视图的行为需要变更同一种状态<br>对于第一个场景来说我们可以采用prop传参的方法，如果是多层嵌套的组件的话，就会显得非常繁琐，麻烦，并且如果是兄弟组件的话，就会更加复杂<br>对于第二个场景来说我们经常会采用父子组件直接引用或者通过事件来变更和同步状态的多份拷贝<br>但是以上两种方式很大的问题就是代码无法维护</li>
+</ul>
+<p>在这个极度困难的时期，vuex就横空出世，它把组件中共享的状态抽取出来，自己组成一个全局实例，让任何组件都可以获取状态或者触发行为，vuex也遵循了一定的规则，使我们的代码更加结构化且容易维护</p>
+<h4 id="vuex-核心"><a href="#vuex-核心" class="headerlink" title="vuex 核心"></a>vuex 核心</h4><ul>
+<li>state   </li>
+<li>getters   </li>
+<li>mutations</li>
+<li>actions</li>
+</ul>
+<p><strong>使用方法</strong>:在main.js里面引入store.js,并且在vue实例中挂载store<br>通过在根实例中注册 store 选项，该 store 实例会注入到根组件下的所有子组件中，且子组件能通过 this.$store 访问到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">let store = new Vuex.store(&#123;</span><br><span class="line">    state()&#123;</span><br><span class="line">        //状态</span><br><span class="line">    &#125;,</span><br><span class="line">    getters()&#123;</span><br><span class="line">        // 获取状态</span><br><span class="line">    &#125;,</span><br><span class="line">    mutations()&#123;</span><br><span class="line">        // 提交状态</span><br><span class="line">    &#125;,</span><br><span class="line">    actions()&#123;</span><br><span class="line">        // 提交mutations</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<h5 id="state"><a href="#state" class="headerlink" title="state"></a>state</h5><p>首先翻译过来就有状态的意思，顾名思义，就是储存状态的地方，它是一个第一的状态树，用一个对象包含了全部的应用层级状态，所以它是一个唯一的数据源，这也意味着每个对象仅仅包含一个store实例。<br>v<br>获得vuex的状态可以使用:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.$store.state.count</span><br><span class="line">// count 是state里的属性</span><br></pre></td></tr></table></figure></p>
+<p>Vuex的状态储存是响应式的，所以从store实例中读取状态的最好方法是在computed(计算属性)中使用<br><strong>注</strong>：由于Vuex是响应式的，因此每次页面刷新的时候vuex里的状态都会初始化，最好使用localStroage解决</p>
+<h5 id="getters"><a href="#getters" class="headerlink" title="getters"></a>getters</h5><p>它是为了在state中输出的时候可以更好的实现一些自定义的状态，就像是Vue中的fillter一样，它的最大优势就是可以缓存，从而提升性能，就像是vue中的计算属性一样，只有当它的依赖改变的时候才会重新计算。</p>
+<p>它可以接受多个参数，第一个参数必须是state<br>getter暴露的是一个store.getters对象，所以我们可以以属性的方式去访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.$store.getters.func //func是在getters当中定义的方法</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意</strong>:getter 在通过属性访问时是作为 Vue 的响应式系统的一部分缓存其中的。</p>
+<h4 id="mutations"><a href="#mutations" class="headerlink" title="mutations"></a>mutations</h4><p>提交mutations是更改状态的唯一方法，每个mutation都有一个字符串的事件类型和回调函数，这个回调函数就是我们实际进行状态更改的地方，同样它的第一个参数也是state</p>
+<p>首先我们来看一下mutation的事件类型，它是一个字符串，当在页面中需要更改状态的时候，在页面中我们不可以像调用方法那样去提交，而是通过store.commit(‘String’)的方式去提交。这里的String是mutation中的事件名，那么问题来了，为什么要这样提交？其实这更像是一个事件注册，它的类型是字符串，当然我们也可以使用常量，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const types = &#123;</span><br><span class="line">    FUN1:&apos;fun1&apos;,</span><br><span class="line">    FUN2:&apos;fun2&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mutations:&#123;</span><br><span class="line">    [types.FUN1]:(state) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    [types.FUN2]:(state) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当然我们也可以不这么些，这样写的目的是使代码更加清晰，更加容易维护，当然如果我们直接使用mutation去更改状态的话，还是建议不这么写，因为在页面中的话，会使得代码很不好理解，也会显得比较突兀</p>
+<p><strong>Payload</strong>，称为载荷，简单来说就是传递的值或者对象，一般来说传递对象会更好<br>Mutation 需遵守 Vue 的响应规则：</p>
+<ul>
+<li>最好提前在store中初始化所有的属性</li>
+<li>如果你是在使需要在使用过程中添加新属性的时候，可以使用vue.set()</li>
+</ul>
+<p>最重要的一点是，mutation必须是同步函数，因为我们要跟踪和观察commit所提交的，如果是异步的话，就很难观察commit所提交的</p>
+<p>那么如果我们必须用异步来提交怎么办昵？<br>所以vuex就给出了actions</p>
+<h4 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h4><p>actions跟mutation倒是有几分相似，它们的不同点在于</p>
+<ul>
+<li>actions提交的是mutation，不是直接改变状态，状态的改变还是得靠mutation</li>
+<li>actions是可以进行异步操作的，所以一般来说，我们还是用actions提交</li>
+</ul>
+<p>Actions有一个context对象，我们可以调用context.commit提交mutation，或者我们也可以通过context.state和context.getters获取状态和方法。那么问题来了，这个context是什么东西哪，如果它可以获取到state和getters，那么它会不会就是store本身哪？答案是肯定不是它自己了，我们可以这么看，Vuex还有一个对象那就是modules，这个models是为了解决state在大型应用的时候会变的很复杂而产生的，module将store分成不同的模块，每个模块都拥有自己的state,getters,mutations,actions。这样的话，我们就可以知道context到底是谁了，它可以看成是不同的模块的实例，而不是store，具体可以看<a href="https://vuex.vuejs.org/zh/guide/modules.html" target="_blank" rel="noopener">Models</a></p>
+<p>现在来看一个actions实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">actions:&#123;</span><br><span class="line">    increment(&#123; commit &#125;)&#123; // 这里的&#123; commit &#125;是ES6中的代码解构</span><br><span class="line">        commit(&apos;increment&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>页面或者组件中使用actions: 使用分发Action<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.dispatch(&apos;increment&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>action 也同样支持载荷方式和对象方式进行分发<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//payload</span><br><span class="line">store.dispatch(&apos;increment&apos;,acount);</span><br><span class="line"></span><br><span class="line">//obj</span><br><span class="line">store.dispatch(&#123; type:&apos;increment&apos;,acount:10 &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>以上是Vuex的基础知识，后续还是需要继续跟进和学习</p>
+<p>2018-12-2(完)</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        </p><p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
