@@ -1,128 +1,160 @@
 <!DOCTYPE html>
-<html>
-  <!-- Html Head Tag-->
-  <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="Sydeny xi">
-  <!-- Open Graph Data -->
-  <meta property="og:title" content="Vue.js 笔记">
-  <meta property="og:description" content="Keeping moving">
-  <meta property="og:site_name" content="Sydeny">
-  <meta property="og:type" content="article">
-  <meta property="og:image" content="http://yoursite.com">
+<html class="full-height">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bulma/0.4.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  
+  <title>Vue.js 笔记 | Sydeny</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Vue 学习笔记">
+<meta name="keywords" content="note">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue.js 笔记">
+<meta property="og:url" content="http://yoursite.com/Vue-js-笔记/index.html">
+<meta property="og:site_name" content="Sydeny">
+<meta property="og:description" content="Vue 学习笔记">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-20T12:20:16.209Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue.js 笔记">
+<meta name="twitter:description" content="Vue 学习笔记">
   
     <link rel="alternate" href="/atom.xml" title="Sydeny" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
   
-
-  <!-- Site Title -->
-  <title>Sydeny</title>
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <!-- Custom CSS -->
   
-  <link rel="stylesheet" href="/css/style.light.css">
-
-  <!-- Google Analytics -->
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/common.css">
+<link rel="stylesheet" href="/css/nav.css">
+<link rel="stylesheet" href="/css/layout.css">
   
 
 </head>
-
-  <body>
-    <!-- Page Header -->
-
-
-<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+</html>
+<body>
+  <header id="navbar" class="overflow-hidden">
   <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="page-title with-background-image">
-          <p class="title">Vue.js 笔记</p>
-          <p class="subtitle"></p>
+    <nav class="nav">
+         <div class="nav-left">
+            <a href="/" class="nav-item" style="font-size: 20px;">
+              <span class="logo">Sydeny</span>'s Blog
+            </a>
+         </div>
+        <div class="nav-center is-hidden position-relative" id="search_container">
+            <div class="nav-item full-width full-height">
+                <i class="fa fa-search has-padding" aria-hidden="true"></i>
+                <input type="text" id="search_input" class="search-input full-height full-width" placeholder="Search post" autofocus>
+                <i id="close_search" class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            <div id="search_result"></div>
         </div>
-        <div class="site-menu with-background-image">
-          <ul>
+        <div class="nav-right nav-menu">
+            <a class="nav-item" id="search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </a>
             
-              <li>
-                <a href="/">
-                  
-                  Home
-                  
-                </a>
-              </li>
+            <a class="nav-item" href="/">
+                Home
+            </a>
             
-              <li>
-                <a href="/archives">
-                  
-                  Archives
-                  
-                </a>
-              </li>
+            <a class="nav-item" href="/works">
+                My Works
+            </a>
             
-              <li>
-                <a href="https://github.com/winsydeny">
-                  
-                  Github
-                  
-                </a>
-              </li>
+            <a class="nav-item" href="/about">
+                About
+            </a>
             
-              <li>
-                <a href="mailto:1395854149@qq.com">
-                  
-                  Email
-                  
-                </a>
-              </li>
-            
-          </ul>
         </div>
-      </div>
-    </div>
+        <span class="nav-toggle" id="navMenuDropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+        <div class="navbar-menu position-absolute full-width content-box is-hidden-desktop is-flex flex-column center" style="top: 100%;">
+            
+            <a class="nav-item flex-1" href="/">
+                Home
+            </a>
+            
+            <a class="nav-item flex-1" href="/works">
+                My Works
+            </a>
+            
+            <a class="nav-item flex-1" href="/about">
+                About
+            </a>
+            
+        </div>
+    </nav>
   </div>
 </header>
 
-<article>
-  <div class="container typo">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="post-info text-muted">
-          
-            <!-- Author -->
-            <span class="author info">By Sydeny xi</span>
-          
-          <!-- Date -->
-          <span class="date-time info">On
-            <span class="date">2018-11-20</span>
-            <span class="time">10:55:40</span>
-          </span>
-          
-          <!--  Categories  -->
-            <span class="categories info">Under 
+  <div id="main-wrap" class="position-relative" style="margin-top: 55px;">
+      <div class="main-inner-content">
+          <!--博文页面-->
 
-<a href="/categories/Vue/">Vue</a>
-</span>
-          
+<style>
+    .header-box {
+        height: 370px;
+        filter: blur(10px);
+        background-size: cover;
+        background-color: lightsteelblue;
+    }
+
+    .post-box {
+        padding: 15px;
+        padding-top: 60px;
+        min-height: 80vh;
+        margin-top: -200px;
+        border-radius: 4px;
+        background-color: rgba(255,255,255,.8);
+    }
+
+    .post-avatar {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+    }
+
+    .flow-chart {
+        text-align: center;
+    }
+
+    img[alt="post-cover"] {
+        display: none;
+    }
+</style>
+<header>
+    <div id="header_box" class="header-box"></div>
+</header>
+<section>
+    <div class="container post-box">
+        <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
+            <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
+                <strong>Vue.js 笔记</strong>
+            </h1>
+            
+            <div class="is-flex align-center">
+                <img class="post-avatar" src="https://cdn2.iconfinder.com/data/icons/rcons-user/32/male-shadow-circle-512.png">
+                <span style="padding:0 10px;"> <span class="sub-title">By</span> Sydeny</span>
+                <span class="post-date sub-title">at: 2018-11-20</span>
+            </div>
+            
+                <div>
+                    
+                         <a class="tag is-post-tag" href="/tags/note/">note</a>
+                    
+                </div>
+            
         </div>
-        <!-- Tags -->
-        
-          <div class="post-tags text-muted">
-            Tags: 
-
-<a class="tag" href="/tags/note/">#note</a>
-
-
-          </div>
-        
-        <!-- Post Main Content -->
-        <div class="post-content">
-          <h4 id="Vue-学习笔记"><a href="#Vue-学习笔记" class="headerlink" title="Vue 学习笔记"></a>Vue 学习笔记</h4><a id="more"></a>
+        <div class="content" style="overflow: auto">
+            <h4 id="Vue-学习笔记"><a href="#Vue-学习笔记" class="headerlink" title="Vue 学习笔记"></a>Vue 学习笔记</h4><a id="more"></a>
 <h2 id="vue-js"><a href="#vue-js" class="headerlink" title="vue.js"></a>vue.js</h2><h4 id="框架和库"><a href="#框架和库" class="headerlink" title="框架和库"></a>框架和库</h4><ul>
 <li>框架(vue angular react) 拥有完整的解决方案,被动(人家调用)<ul>
 <li>vue全家桶 vue.js + vue-router + vuex(管理组件) + axios(获取数据)</li>
@@ -208,41 +240,78 @@ v-bind 动态绑定属性
 </ul>
 
         </div>
-      </div>
+        <div class="post-reply">
+            
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTE4Ni81NzUz">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+            
+            
+        </div>
     </div>
+</section>
+<script>
+    // 获取第一张图, 用以当封面背景图
+    var img = document.querySelectorAll('img')[1]
+
+    if (img) {
+        var header_box = document.querySelector('#header_box')
+        header_box.style.backgroundImage = 'url('+ img.src +')'
+    }
+</script>
+
+<!-- for code block highlight --> 
+<!-- theme.block_highlight -->
+<!-- we do not guarantee the char sequences spell right, usr himself do it -->
+<link rel="stylesheet" href="/css/highlight_rainbow.css">
+<script src="/js/highlight.min.js"></script>
+<script type="text/javascript"> hljs.initHighlightingOnLoad();</script>
+
+      </div>
   </div>
-</article>
+  <style>
+  #footer {
+    min-height: 10vh;
+    background: black;
+    color: #fff;
+  }
 
-
-
-    <!-- Footer -->
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <p class="copyright text-muted">
-          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
-          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
-        </p><p class="copyright text-muted">
-          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
-        </p>
+  #footer a {
+    color: #e1e1e1;
+  }
+</style>
+<footer id="footer" class="has-text-centered is-flex center">
+  <div class="container has-padding">
+    <div>
+      <div>
+        <!--请您保留作者署名, 主题制作来之不易-->
+        Theme by <a href="http://haojen.github.io/">Haojen Ma</a>
+        <br>
+        Copyright © Sydeny xi 2018
+        <br>
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
       </div>
     </div>
   </div>
 </footer>
 
+<script src="/js/search_core.js"></script>
+<script src="/js/script.js"></script>
 
-    <!-- After Footer Scripts -->
-<script src="/js/highlight.pack.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function(event) {
-    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
-    codeBlocks.forEach(function(block, index) {
-      hljs.highlightBlock(block);
-    });
-  });
-</script>
-
-  </body>
+</body>
 </html>
-
