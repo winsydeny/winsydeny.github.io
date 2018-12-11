@@ -27,8 +27,6 @@
     <link rel="icon" href="/favicon.png">
   
   
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
   <link rel="stylesheet" href="/css/common.css">
 <link rel="stylesheet" href="/css/nav.css">
 <link rel="stylesheet" href="/css/layout.css">
@@ -161,8 +159,24 @@
 <li>完成拦截器的配置后在main.js中导入http.js </li>
 <li>在main.js中通过Vue.prototype.$axios = axios 来实现在全局中使用$axios</li>
 </ol>
-<h3 id="http-js"><a href="#http-js" class="headerlink" title="http.js"></a>http.js</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 请求拦截</span><br><span class="line">axios.interceptors.request.use(config =&gt; &#123;</span><br><span class="line">        // 拦截成功 </span><br><span class="line">        return config;</span><br><span class="line">    &#125;,err =&gt; &#123;</span><br><span class="line">        //失败</span><br><span class="line">        return Promise.reject(err)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//响应拦截</span><br><span class="line">axios.interceptors.response.use(response =&gt; &#123;</span><br><span class="line">    //拦截成功</span><br><span class="line">    return response</span><br><span class="line">&#125;,err =&gt; &#123;</span><br><span class="line">    //失败</span><br><span class="line">    return Promise.reject(err);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h4 id="注-使用http-js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护"><a href="#注-使用http-js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护" class="headerlink" title="注:使用http.js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护"></a>注:使用http.js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护</h4><hr>
+<h3 id="http-js"><a href="#http-js" class="headerlink" title="http.js"></a>http.js</h3><pre><code>// 请求拦截
+axios.interceptors.request.use(config =&gt; {
+        // 拦截成功 
+        return config;
+    },err =&gt; {
+        //失败
+        return Promise.reject(err)
+});
+
+//响应拦截
+axios.interceptors.response.use(response =&gt; {
+    //拦截成功
+    return response
+},err =&gt; {
+    //失败
+    return Promise.reject(err);
+})
+</code></pre><h4 id="注-使用http-js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护"><a href="#注-使用http-js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护" class="headerlink" title="注:使用http.js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护"></a>注:使用http.js是为了统一处理http的请求和响应，实现了代码的模块化，也好后期维护</h4><hr>
 
         </div>
         <div class="post-reply">
@@ -203,7 +217,7 @@
 <!-- for code block highlight --> 
 <!-- theme.block_highlight -->
 <!-- we do not guarantee the char sequences spell right, usr himself do it -->
-<link rel="stylesheet" href="/css/highlight_github.css">
+<link rel="stylesheet" href="/css/highlight_vs.css">
 <script src="/js/highlight.min.js"></script>
 <script type="text/javascript"> hljs.initHighlightingOnLoad();</script>
 
