@@ -3,6 +3,29 @@
   
     
     <entry>
+      <title>后台管理小项目总结</title>
+      <link href="//%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E5%B0%8F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
+      <url>//%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E5%B0%8F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a>后台管理小项目总结</h4><a id="more"></a><h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>最近在遵循视频教程学习一个后台管理系统的前后端分离项目,所以它最大的优点就是前后端分离了，在这个项目实战中我获得了很多，也知道了自己的短板和学习中的问题，但是，目前我还是没有任何可行的办法去克服我的这些短板，所以为了尽早可以让我有一个质的突破，我下定决定去写一写这个项目的总结，开始正题：</p><h6 id="项目名称"><a href="#项目名称" class="headerlink" title="项目名称"></a>项目名称</h6><p>xxx后台管理</p><h6 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h6><ul><li>src<ul><li>assets(folder)</li><li>components (folder)<ul><li>Dialog.vue</li><li>HeadNav.vue</li><li>LeftMenu.vue</li></ul></li><li>views(folder)<ul><li>404.vue</li><li>Fund.vue</li><li>Home.vue</li><li>index.vue</li><li>Login.vue</li><li>Profile.vue</li><li>Register.vue</li></ul></li><li>App.vue</li><li>http.js</li><li>main.js</li><li>router.js</li><li>store.js</li></ul></li></ul><h6 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h6><ul><li>前端<ul><li>Vue.js(vue-cli 3)</li><li>Vuex</li><li>Vue-router</li><li>element-ui</li><li>axios</li><li>jwt-decode        token解析</li></ul></li><li>后端<ul><li>Node.js   </li><li>express</li><li>mongoDB   </li><li>mongoose</li><li>body-parse        格式化request过来的数据，方便使用</li><li>jsonwebtoken      生成token</li><li>passport          token验证</li><li>passport-jwt      <h6 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h6></li></ul></li><li>登陆，注册</li><li>资金管理(CURD)<br>虽然功能很少，但是在这个项目中我还是学到了很对东西，对vue和node算是有了更深一层的理解<h6 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h6></li><li>前端<ul><li>UI组件的使用。究其根本应该对element-ui文档不熟悉</li><li>布局。鬼知道发生了什么，居然在布局方面我花了大量的时间去调整一个登陆和注册页面的问题。</li><li>Vuex的使用和概念</li><li>Vue-router 路由守卫</li><li>axios 请求拦截 响应拦截(重点) </li></ul></li><li>后端<ul><li>跨域</li><li>express 路由的使用</li><li>token的生成和使用</li><li>token的验证</li><li>mongoose schema</li></ul></li></ul><h6 id="要完善的问题"><a href="#要完善的问题" class="headerlink" title="要完善的问题"></a>要完善的问题</h6><ul><li>完成还没有实现的更新操作</li><li>完成注册时秘密的加密</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> summary </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> vue.js </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>念念手纪</title>
       <link href="//%E5%BF%B5%E5%BF%B5%E6%89%8B%E7%BA%AA/"/>
       <url>//%E5%BF%B5%E5%BF%B5%E6%89%8B%E7%BA%AA/</url>
