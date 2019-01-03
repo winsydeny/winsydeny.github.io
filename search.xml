@@ -3,6 +3,40 @@
   
     
     <entry>
+      <title>#### js作用域、基本数据类型、引用数据类型</title>
+      <link href="//js%E4%BD%9C%E7%94%A8%E5%9F%9F%E3%80%81%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81/"/>
+      <url>//js%E4%BD%9C%E7%94%A8%E5%9F%9F%E3%80%81%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81/</url>
+      
+        <content type="html"><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a>#### js作用域、基本数据类型、引用数据类型</h4><a id="more"></a><h4 id="js作用域、基本数据类型、引用数据类型"><a href="#js作用域、基本数据类型、引用数据类型" class="headerlink" title="js作用域、基本数据类型、引用数据类型"></a>js作用域、基本数据类型、引用数据类型</h4><h4 id="问题"><a href="#问题" class="headerlink" title="问题?"></a>问题?</h4><p>首先，为什么一般把js放在body的末尾<br>    1.为什么？<br>    2.放在Head中可不可以？如何放在Head中也可以实现body末尾的效果<br>    3.script标签中有两个属性，defer asycn, 这两个属性是做什么用的？<br>Answer:<br>    1.因为浏览器在渲染的的时候是从html开始部分逐行渲染使用，在遇到js标签的时候就会加载执行，如果js不在body后面，那么在js里获取dom就会出错<br>    2.可以放在head中去，在js代码中用到window.onload就可以实现<br>    3.defer async 相同点：js与html同时加载，(异步) 不同点：执行的时间点不一样，defer，就像它的意思一样，延缓，在html文档执行完毕之后执行， async，在js加载完毕之后与html同时执行<br>    如图：<br>    <img src="/js作用域、基本数据类型、引用数据类型、/js作用域、基本数据类型、引用数据类型/script.png" alt="如图"></p><h4 id="作用域的理解"><a href="#作用域的理解" class="headerlink" title="作用域的理解"></a>作用域的理解</h4><h6 id="基本数据类型-number"><a href="#基本数据类型-number" class="headerlink" title="基本数据类型(number)"></a>基本数据类型(number)</h6><pre><code>A:    let a = 1;    let b = a;    b = 100;    console.log(a);</code></pre><p>当浏览器要执行js代码的时候，首先会生成一个window的全局作用域</p><pre><code>let a = 1;</code></pre><p>上面代码要经过三个步骤:</p><ul><li>首先声明一个变量a，没有赋值(默认为undefined)</li><li>在当前作用域中开辟一个位置存储1</li><li>让变量a和1关联在一起 a = 1;</li></ul><pre><code>let b = a;</code></pre><p>由于a 与 b都为值类型，所以值类型的操作都只与值有关：</p><ul><li>首先声明一个变量b，且不赋值</li><li>将a的值复制一份</li><li>把变量b 与 a的值1，关联起来，<br>此时虽然b与a同属于一个值，但是它们在作用域中是两个不同的值，b只不过是a的值的一个副本<pre><code>b = 100;</code></pre>因为b与a毫不相干，所以a当中的值是不会改变的</li></ul><h6 id="引用数据类型-object-function"><a href="#引用数据类型-object-function" class="headerlink" title="引用数据类型(object,function)"></a>引用数据类型(object,function)</h6><p>由于引用数据类型比基本数据类型复杂，所以在当前的作用域中只能存储基本数据类型，js引擎在内存中取得一块地址为16进制的内存块用来存储引用数据类型的值，键值对等<br><strong>Object</strong></p><pre><code>B:    let ary1 = [12,23];    let ary2 = arr1;    ary2.push(100);    console.log(ary1); //ary1=&gt;[1,2,100]</code></pre><p>引用数据类型的声明和存储方式和基本数据类型基本一致，都是在当前作用域下声明和赋值的<br>唯一且最大不同就是引用类型赋值的是一个在内存中的16进制地址，这个地址我们可以当做是一个指针，指向内存当做的位置</p><pre><code>let ary2 = ary1;</code></pre><p>执行步骤:</p><ul><li>此时ary1的只是一个16进制的数，ary1 复制一份</li><li>ary2 关联到ary1 复制的值，且值相同<br>由于是一个地址值，所在使用ary1或者ary2时，它们根据地址找到内存中的数据块，因此，两个值是指向同一个内存块，任意改变其中一个的值，另一个也会改变</li></ul><p>如图:<br><img src="/js作用域、基本数据类型、引用数据类型、/js作用域、基本数据类型、引用数据类型/scope.png" alt="如图"></p><p><strong>function</strong></p><pre><code>function sum(){    let total = null;    for(let i = 0;i&lt;arguments.length;i++){        let item = arguments[i];        item = parseFloat(item);        !isNaN(item)?total += item:null;    }    return total;}</code></pre><p>执行步骤：</p><ol><li>首先在全局作用域window中声明sum</li><li>将函数部分以字符串的形式存储在内存中，并且计算出内存中的地址值</li><li>把地址值赋值给sum，此时sum的值就是字符串形式的函数部分</li><li>执行sum()时，浏览器会创建一个函数的私有作用域</li><li>此时以字符串形式储存在内存当中的函数部分就可以在这个私有作用域中以代码的形式执行并计算结果，最后返回计算的结果</li></ol><p><strong>通过以上我们可以知道基本数据类型在作用域中储存数据，而引用数据类型则是在内存中新开辟出来的空间中存储</strong></p><p>因此，我们就可以把作用域比作为<strong>栈内存</strong>，而引用类型的存储空间认为是<strong>堆内存</strong>：</p><h5 id="堆内存-栈内存"><a href="#堆内存-栈内存" class="headerlink" title="堆内存,栈内存"></a>堆内存,栈内存</h5><p><strong>栈内存</strong>:是js代码执行的内存空间，给js代码提供了一个自上而下的执行环境。</p><ul><li>当栈内存被销毁后，存储的基本值也就同样被销毁了<br><strong>堆内存</strong>:引用数据类型对应的空间，主要是用来存储引用类型的值(对象:键值对，函数:代码字符串)</li><li>当堆内存销毁后，引用值也就随之销毁了<br>堆内存释放的问题:<ul><li>在谷歌(webkit)浏览器中，当堆内存没有被任何的变量或者是其它任何东西所占用的时候，浏览器就会在空闲的时候，自主进行垃圾回收机制来回收内存空间，即销毁没有用的堆内存。</li><li>在ie浏览器中，ie是使用计数器的方式来监听堆内存，当计数器为0的时候，ie就会启动垃圾回收机制去回收内存，但是ie最大的问题就出现在这里，如果js代码复杂度很高，同一个堆内存被很多个变量或其他引用，计数器就会混乱，导致内存泄漏。</li><li>一般我们可以用null来释放堆内存</li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> JavaScript </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> note </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>js中的堆栈内存释放</title>
+      <link href="//js%E4%B8%AD%E7%9A%84%E5%A0%86%E6%A0%88%E5%86%85%E5%AD%98%E9%87%8A%E6%94%BE/"/>
+      <url>//js%E4%B8%AD%E7%9A%84%E5%A0%86%E6%A0%88%E5%86%85%E5%AD%98%E9%87%8A%E6%94%BE/</url>
+      
+        <content type="html"><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a>js中的堆栈内存释放</h4><a id="more"></a><p><strong>首先</strong>，我们得知道什么是堆内存，什么是栈内存？</p><ul><li>堆内存: 存放的是引用数据类型(键值对,函数代码字符串)</li><li>栈内存: 存放的是基本数据类型和提供js代码执行的环境</li></ul><p><strong>注意:</strong> 一般我们所说的作用域指的就是栈内存，js代码都是在作用域(栈内存)中运行的</p><h4 id="堆内存的释放"><a href="#堆内存的释放" class="headerlink" title="堆内存的释放"></a>堆内存的释放</h4><p>让所有引用堆内存空间地址的变量赋值为null即可，由于浏览器的内存释放机制，会在浏览器空闲的时候把没有变量占用的堆内存释放掉<br>简单点来说堆内存的释放就是把变量的值赋值为null</p><h4 id="栈内存的释放"><a href="#栈内存的释放" class="headerlink" title="栈内存的释放"></a>栈内存的释放</h4><p>一般情况下，当函数执行完成所形成的私有作用域(栈内存)，都会自动释放(栈内存的基本数据类型的值也会释放)<br>但是也有一些特殊的情况下，栈内存不会被释放</p><ol><li>函数执行完成，当形成的栈内存中，某些内存被栈内存以外的变量占用了，此时的栈内存就不能释放(一旦释放后，外面的变量就找不到原有的内容了)</li><li>全局的栈内存(window对象)只有在页面关闭的时候才会被释放掉</li></ol><p>如果当前的栈内存没有被释放，那么之前在栈内存当中存储的基本值也不会被释放，能够一直被保存下来</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    <entry>
       <title>2019展望</title>
       <link href="//2019%E5%B1%95%E6%9C%9B/"/>
       <url>//2019%E5%B1%95%E6%9C%9B/</url>
