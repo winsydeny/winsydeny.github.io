@@ -1,8 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
-import { useEffect, useRef, useState} from 'react'
+import { useState} from 'react'
 import react from 'react'
-import { getMaxListeners } from 'node-notifier';
 function getList(parma,callback){
   callback('return list')
 }
