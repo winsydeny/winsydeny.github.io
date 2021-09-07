@@ -25,7 +25,7 @@ function App() {
   return (
   <div>
     <MarkDownEdit text={mk}></MarkDownEdit>
-    <h1 className="app-h1">test11{name.name}</h1>
+    <h1 className="app-h1">Test my App with today</h1>
     <input 
       className="test" 
       onChange={(evt)=>{ setName(name.name+evt.nativeEvent.data)}} 
