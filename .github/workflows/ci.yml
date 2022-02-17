@@ -18,7 +18,10 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          ssh-key: true
           branch: gh-pages
           folder: build
+          clean: true
+          clean-exclude: |
+            special-file.txt
+            some/*.txt
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
