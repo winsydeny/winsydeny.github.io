@@ -13,18 +13,18 @@ customize:
     enabled: true
     width: 50
     height: 50
-    url: /images/logo.png
+    url: /images/my-logo.png
     gravatar: false
   favicon:
     # eg. generate with http://realfavicongenerator.net/
     desktop:
-      url: /images/favicon.ico
+      url: /images/favicon_my.ico
       gravatar: false
     android:
-      url: /images/favicon-192x192.png
+      url: /images/favicon_my.png
       gravator: false
     apple:
-      url: /images/apple-touch-icon.png
+      url: /images/favicon_my.png
       gravator: false
   social_links:
     github: http://github.com/sergodeeva
