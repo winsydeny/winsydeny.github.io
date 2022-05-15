@@ -1,0 +1,38 @@
+<main class="main" role="main">
+  <main class="main" role="main">
+    <article class="article article-categories article-type-list" itemscope="">
+      <header class="article-header">
+        <% if(path === 'categories/index.html'){ %>
+        <h2>Total <%- site.categories.length %></h2>
+        <% } %>
+        <nav role="navigation" id="nav-main" class="okayNav">
+          <ul class="post-list">
+
+
+            <% site.categories.each(function(item){ %>
+
+              <% if(path === 'categories/index.html'){ %>
+                <a href="<%= config.root %><%= item.path %>"><%= item.name %>(<%- item.posts.length%>) </a><br>
+              <% }%>
+              <% const cate_path = config.root + item.path; %>
+              <% if (path === (item.path + 'index.html')) { %>
+
+                <h1>
+                  <%- item.name%>
+                </h1>
+                  <% item.posts.each(function(post){ %>
+                  <li class="post-item" style="margin-bottom: -8px">
+                    <%- partial('_partial/post/date', { post: post, class_name: 'meta' }) %>
+                    <span><%- partial('_partial/post/title', { post: post, index: true, class_name: '' }) %></span>
+                  </li>
+                  <% }) %>
+                <% };%>
+            <% }) %>
+          </ul>
+        </nav>  
+  
+  
+  </main>
+  
+  
+</main>
