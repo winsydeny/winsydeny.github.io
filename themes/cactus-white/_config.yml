@@ -32,7 +32,7 @@ customize:
     linkedin: https://www.linkedin.com/in/natalyakosenko/
   show_all_posts: true
   post_count: 10
-  highlight: pojoaque
+  highlight: obsidian
 
 # RSS
 rss: false
