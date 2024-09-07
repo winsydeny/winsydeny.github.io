@@ -1095,7 +1095,7 @@ article .content .video-container embed {
 }
 article .content blockquote {
   background: inherit;
-  color: #ccffb6;
+  color: #34ac00;
   border-left: 0px solid #ccc;
   margin: 1rem 10px;
   padding: 0.5em 10px;
@@ -1105,7 +1105,7 @@ article .content blockquote p {
   margin: 0;
 }
 article .content blockquote:before {
-  color: #ccffb6;
+  color: #34ac00;
   content: "\201C";
   font-size: 2em;
   line-height: 0.1em;
@@ -1321,62 +1321,68 @@ article .content .caption {
   color: #383838;
 }
 .highlight {
-  color: #dccf8f;
-  background: url("./pojoaque.jpg") repeat scroll left top #181914;
-}
-.highlight .code .comment,
-.highlight .code .quote {
-  color: #586e75;
-  font-style: italic;
+  color: #e0e2e4;
+  background: #282b2e;
 }
 .highlight .code .keyword,
 .highlight .code .selector-tag,
 .highlight .code .literal,
-.highlight .code .addition {
-  color: #b64926;
+.highlight .code .selector-id {
+  color: #93c763;
 }
-.highlight .code .number,
-.highlight .code .string,
-.highlight .code .doctag,
-.highlight .code .regexp {
-  color: #468966;
-}
-.highlight .code .title,
-.highlight .code .section,
-.highlight .code .built_in,
-.highlight .code .name {
-  color: #ffb03b;
-}
-.highlight .code .variable,
-.highlight .code .template-variable,
-.highlight .code .class .title,
-.highlight .code .type,
-.highlight .code .tag {
-  color: #b58900;
+.highlight .code .number {
+  color: #ffcd22;
 }
 .highlight .code .attribute {
-  color: #b89859;
+  color: #668bb0;
 }
-.highlight .code .symbol,
-.highlight .code .bullet,
-.highlight .code .link,
-.highlight .code .subst,
+.highlight .code .code,
+.highlight .code .class .title,
+.highlight .code .section {
+  color: #fff;
+}
+.highlight .code .regexp,
+.highlight .code .link {
+  color: #d39745;
+}
 .highlight .code .meta {
-  color: #cb4b16;
+  color: #557182;
 }
+.highlight .code .tag,
+.highlight .code .name,
+.highlight .code .bullet,
+.highlight .code .subst,
+.highlight .code .emphasis,
+.highlight .code .type,
+.highlight .code .built_in,
+.highlight .code .selector-attr,
+.highlight .code .selector-pseudo,
+.highlight .code .addition,
+.highlight .code .variable,
+.highlight .code .template-tag,
+.highlight .code .template-variable {
+  color: #8cbbad;
+}
+.highlight .code .string,
+.highlight .code .symbol {
+  color: #ec7600;
+}
+.highlight .code .comment,
+.highlight .code .quote,
 .highlight .code .deletion {
-  color: #dc322f;
+  color: #818e96;
 }
-.highlight .code .selector-id,
 .highlight .code .selector-class {
-  color: #d3a60c;
+  color: #a082bd;
 }
-.highlight .code .formula {
-  background: #073642;
-}
-.highlight .code .emphasis {
-  font-style: italic;
-}
+.highlight .code .keyword,
+.highlight .code .selector-tag,
+.highlight .code .literal,
+.highlight .code .doctag,
+.highlight .code .title,
+.highlight .code .section,
+.highlight .code .type,
+.highlight .code .name,
 .highlight .code .strong {
   font-weight: bold;
 }
