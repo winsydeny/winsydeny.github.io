@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>太阳系轨道与飞行模拟器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #050505;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #canvas-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .ui-panel {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(20, 20, 30, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #555;
+      backdrop-filter: blur(10px);
+      max-width: 380px;
+      max-height: 95vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+      z-index: 100;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      display: inline-block;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .btn {
+      background: linear-gradient(to bottom right, #2563eb, #1d4ed8);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+      font-weight: bold;
+      font-size: 0.9em;
+      transition: all 0.2s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      background: #374151;
+      cursor: not-allowed;
+      transform: none;
+      opacity: 0.6;
+      box-shadow: none;
+      color: #9ca3af;
+    }
+
+    .timer-display {
+      font-family: 'Courier New', Courier, monospace;
+      background: #111;
+      border: 1px solid #333;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 15px;
+      text-align: center;
+      color: #00ff00;
+      font-size: 1.2em;
+      text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    }
+
+    .flight-info {
+      font-size: 0.8em;
+      color: #aaa;
+      margin-top: 5px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* 针对 Tailwind 的复选框样式调整 */
+    .form-checkbox {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .form-checkbox:checked {
+      background-color: #4f46e5;
+      border-color: #4f46e5;
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="canvas-container">
+    <canvas id="orbitCanvas"></canvas>
+
+    <div class="ui-panel">
+      <h2 class="text-xl font-bold mb-2 text-white border-b border-gray-700 pb-2">🚀 地球发射至行星转移模拟</h2>
+      <p class="text-xs text-gray-400 mb-4">
+        模拟霍曼转移轨道。取消勾选远距离行星将自动放大轨道比例尺。
+      </p>
+
+      <!-- 行星选择与控制区域 -->
+      <div id="planet-controls" class="space-y-1 text-sm mb-4">
+        <p class="font-semibold text-gray-400 border-b border-gray-700 pb-1">选择要显示的行星 (轨道和按钮)</p>
+        <!-- 运行时填充 -->
+      </div>
+
+      <!-- 任务按钮 -->
+      <div id="launch-buttons" class="space-y-2">
+        <!-- 运行时填充 -->
+      </div>
+
+      <div class="timer-display" id="time-counter">T+ 00天</div>
+      <div class="flight-info" id="flight-status">
+        等待发射指令...<br>
+        <span style="font-size:0.9em; color:#666">（注：模拟仅供示意，不含引力助推）</span>
+      </div>
+
+      <!-- 当前探测器状态日志 -->
+      <div id="mission-status-log" class="mt-4 p-3 bg-gray-900 border border-indigo-700 rounded-lg text-sm">
+        <p class="font-semibold text-indigo-300 mb-1">当前探测器状态:</p>
+        <p id="probe-status-text" class="text-gray-400">无活动任务。</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // 获取Canvas元素及其2D上下文
+      const canvas = document.getElementById('orbitCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // 行星数据：r: 半径 (AU), color: 颜色, size: 大小 (像素), speed: 视觉角速度（相对地球）, angle: 初始角度, name: 名称, launchTime: 预计飞行时间（天）
+      // r 字段现在存储的是 AU 值，而不是像素值
+      const ORBITS = {
+        mercury: { r: 0.39, color: '#b5a37e', size: 3, speed: 0.8 * 1.60, angle: 1.0, name: '水星', launchTime: 100 },
+        venus: { r: 0.72, color: '#f59e0b', size: 4, speed: 0.8 * 1.18, angle: 2.5, name: '金星', launchTime: 140 },
+        earth: { r: 1.00, color: '#3b82f6', size: 5, speed: 0.8 * 1.00, angle: 0.0, name: '地球', launchTime: 0 },
+        mars: { r: 1.52, color: '#ef4444', size: 4, speed: 0.8 * 0.81, angle: 1.5, name: '火星', launchTime: 220 },
+        jupiter: { r: 5.20, color: '#d97706', size: 12, speed: 0.8 * 0.44, angle: 3.5, name: '木星', launchTime: 800 },
+        saturn: { r: 9.58, color: '#d4aa7c', size: 10, speed: 0.8 * 0.32, angle: 4.5, name: '土星', launchTime: 1800 },
+        uranus: { r: 19.23, color: '#a3f2f0', size: 8, speed: 0.8 * 0.23, angle: 5.0, name: '天王星', launchTime: 3000 },
+        neptune: { r: 30.10, color: '#4f46e5', size: 8, speed: 0.8 * 0.18, angle: 6.0, name: '海王星', launchTime: 4500 }
+      };
+
+      // 状态变量
+      let probes = []; // 储存发射的探测器
+      let w, h, cx, cy; // 宽高和中心坐标
+      let planetVisibility = {}; // 跟踪行星的可见状态 (key -> boolean)
+      let currentMaxAU = 30.10; // 当前可见行星的最大AU半径，用于计算缩放
+      let dynamicScale = 30; // 每AU对应的像素值
+      let currentFlightTargetKey = null; // 当前目标行星的键
+
+      // 窗口大小变化时调整Canvas
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        cx = w / 2; // 中心X
+        cy = h / 2; // 中心Y
+        calculateDynamicScale(); // 窗口变化时重新计算缩放
+      }
+      window.addEventListener('resize', resize);
+
+      // 计算动态缩放比例
+      function calculateDynamicScale() {
+        // 使用最短边长的85%作为最大可用于轨道的像素半径
+        const paddingRatio = 0.85;
+        const maxRadiusPx = Math.min(w, h) / 2 * paddingRatio;
+
+        // 确保 currentMaxAU 至少为地球轨道 (1.0 AU)
+        const effectiveMaxAU = Math.max(currentMaxAU, 1.0);
+
+        dynamicScale = maxRadiusPx / effectiveMaxAU;
+      }
+
+      // 更新当前可见行星的最大AU半径
+      function updateMaxAU() {
+        let maxR = 1.0; // 始终包含地球轨道
+        for (const key in ORBITS) {
+          if (planetVisibility[key] && ORBITS[key].r > maxR) {
+            maxR = ORBITS[key].r;
+          }
+        }
+        currentMaxAU = maxR;
+        calculateDynamicScale(); // 更新 AU 后立即计算新的缩放比例
+      }
+
+
+      // 填充UI面板的图例和按钮
+      function initializeUI() {
+        const controls = document.getElementById('planet-controls');
+        const buttons = document.getElementById('launch-buttons');
+
+        let controlHtml = '';
+        let buttonHtml = '';
+
+        for (const key in ORBITS) {
+          const p = ORBITS[key];
+
+          // 默认所有行星可见
+          planetVisibility[key] = true;
+
+          // Control HTML (行星选择器)
+          const isEarth = key === 'earth';
+          const disableCheck = isEarth ? 'disabled' : '';
+          const initialCheck = 'checked';
+
+          controlHtml += `
+                <label class="flex items-center cursor-pointer justify-between p-1 hover:bg-gray-800 rounded">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="check-${key}" ${initialCheck} ${disableCheck} class="form-checkbox h-4 w-4 text-indigo-500 rounded border-gray-600 bg-gray-700" data-planet="${key}">
+                        <span class="legend-dot ml-2" style="background:${p.color}; box-shadow: 0 0 5px ${p.color};"></span>
+                        <span class="ml-1 text-gray-300">${p.name} (${(p.r).toFixed(2)} AU)${isEarth ? ' (固定)' : ''}</span>
+                    </div>
+                </label>
+            `;
+
+          // Button HTML (仅限非地球目标)
+          if (!isEarth) {
+            // 格式化时间
+            const days = p.launchTime;
+            const years = Math.floor(days / 365);
+            const timeStr = years > 0 ? `~${years} 年` : `~${days} 天`;
+
+            buttonHtml += `
+                    <button id="btn-launch-${key}" class="btn" data-target="${key}">
+                        <span>🚀 发射至 ${p.name}</span>
+                        <span class="text-xs opacity-70">${timeStr}</span>
+                    </button>
+                `;
+          }
+        }
+
+        controls.innerHTML = controlHtml;
+        buttons.innerHTML = buttonHtml;
+
+        // 绑定 Launch 事件
+        document.querySelectorAll('.btn').forEach(button => {
+          button.addEventListener('click', (e) => {
+            const targetKey = e.currentTarget.getAttribute('data-target');
+            if (targetKey) launchProbe(targetKey);
+          });
+        });
+
+        // 绑定 Visibility toggle 事件
+        document.querySelectorAll('#planet-controls input[type="checkbox"]').forEach(checkbox => {
+          checkbox.addEventListener('change', (e) => {
+            const key = e.target.getAttribute('data-planet');
+            if (key === 'earth') return; // 地球始终可见
+
+            const isChecked = e.target.checked;
+            planetVisibility[key] = isChecked;
+
+            // 切换发射按钮的可见性
+            const launchBtn = document.getElementById(`btn-launch-${key}`);
+            if (launchBtn) {
+              launchBtn.style.display = isChecked ? 'flex' : 'none';
+            }
+
+            // 重新计算最大AU并调整缩放
+            updateMaxAU();
+          });
+        });
+
+        // 初始化缩放
+        updateMaxAU();
+      }
+
+      // 绘图辅助函数
+      function drawOrbit(auRadius) {
+        if (auRadius < 0.1) return; // 忽略太小的轨道
+        const r_px = auRadius * dynamicScale;
+
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.lineWidth = 1;
+        ctx.arc(cx, cy, r_px, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      function drawPlanet(planet) {
+        const r_px = planet.r * dynamicScale;
+        const x = cx + Math.cos(planet.angle) * r_px;
+        const y = cy + Math.sin(planet.angle) * r_px;
+
+        // 绘制行星和光晕
+        ctx.beginPath();
+        ctx.fillStyle = planet.color;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = planet.color;
+        ctx.arc(x, y, planet.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // 绘制标签
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.font = '11px Arial';
+        ctx.fillText(planet.name, x + 12, y + 4);
+      }
+
+      function drawSun() {
+        // 绘制太阳
+        ctx.beginPath();
+        ctx.fillStyle = '#fbbf24';
+        ctx.shadowBlur = 40;
+        ctx.shadowColor = '#fbbf24';
+        ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = 'white';
+        ctx.font = '12px Arial';
+        ctx.fillText("太阳", cx - 12, cy + 30);
+      }
+
+      // 主循环
+      function animate() {
+        ctx.fillStyle = '#050505'; // 宇宙黑色背景
+        ctx.fillRect(0, 0, w, h);
+
+        drawSun();
+        calculateDynamicScale(); // 每次绘图前重新计算一次动态比例尺
+
+        // 1. 更新并绘制行星
+        for (let key in ORBITS) {
+          // 检查行星是否可见
+          if (!planetVisibility[key]) continue;
+
+          const p = ORBITS[key];
+          drawOrbit(p.r); // 传入AU半径
+          // 行星持续公转
+          p.angle += 0.005 * p.speed;
+          drawPlanet(p);
+        }
+
+        // 2. 更新并绘制探测器
+        updateProbes();
+
+        requestAnimationFrame(animate);
+      }
+
+      function updateProbes() {
+        const timeCounter = document.getElementById('time-counter');
+        const statusText = document.getElementById('flight-status');
+        const missionLog = document.getElementById('probe-status-text'); // 探测器状态元素
+
+        if (probes.length === 0) {
+          // 没有活动探测器时，重置状态显示
+          missionLog.innerHTML = "无活动任务。";
+          timeCounter.innerText = "T+ 00天";
+          timeCounter.style.color = '#00ff00';
+          statusText.innerText = "等待发射指令...";
+          statusText.style.color = "#aaa";
+        }
+
+        for (let i = probes.length - 1; i >= 0; i--) {
+          let p = probes[i];
+
+          if (p.progress < 1) {
+            p.progress += p.stepSize; // 推进飞行进度
+
+            // 计算模拟时间
+            const currentDays = Math.floor(p.progress * p.totalDays);
+            const years = Math.floor(currentDays / 365);
+            const daysLeft = currentDays % 365;
+
+            let timeStr = `T+ ${currentDays}天`;
+            if (years > 0) timeStr = `T+ ${years}年 ${daysLeft}天`;
+
+            timeCounter.innerText = timeStr;
+            timeCounter.style.color = p.progress > 0.9 ? '#4ade80' : '#00ff00';
+
+            // --- 曲线轨迹逻辑 (霍曼转移轨道模拟) ---
+
+            // 半径变化 (AU): 从地球AU半径平滑过渡到目标行星AU半径
+            const currentR_au = p.startR_au + (p.targetR_au - p.startR_au) * Math.sin(p.progress * Math.PI / 2);
+
+            // 角度变化：从起始角度到总转角进行插值
+            const currentAngle = p.startAngle + (p.totalDeltaAngle * p.progress);
+
+            // 转换成像素坐标
+            const currentR_px = currentR_au * dynamicScale;
+
+            p.x = cx + Math.cos(currentAngle) * currentR_px;
+            p.y = cy + Math.sin(currentAngle) * currentR_px;
+
+            // 绘制探测器（蓝青色小点）
+            ctx.beginPath();
+            ctx.fillStyle = '#00ffff';
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#00ffff';
+            ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // 绘制轨迹
+            p.trail.push({ x: p.x, y: p.y });
+            if (p.trail.length > 500) p.trail.shift(); // 增加轨迹长度以适应更长/更大的轨道
+
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.5)';
+            ctx.lineWidth = 1.5;
+            if (p.trail.length > 0) {
+              ctx.moveTo(p.trail[0].x, p.trail[0].y);
+              for (let pt of p.trail) ctx.lineTo(pt.x, pt.y);
+            }
+            ctx.stroke();
+
+            // 更新任务日志面板
+            const targetName = ORBITS[p.targetKey].name;
+            const progressPercent = (p.progress * 100).toFixed(1);
+
+            missionLog.innerHTML = `
+                    目标: <span class="text-indigo-400">${targetName}</span><br>
+                    进度: <span class="text-green-400">${progressPercent}%</span>
+                `;
+
+          } else {
+            // 抵达目标
+            statusText.innerText = "任务完成：成功抵达 " + ORBITS[p.targetKey].name;
+            statusText.style.color = "#4ade80";
+            enableButtons(); // 重新启用按钮
+            probes.splice(i, 1); // 移除探测器
+            // 任务完成，清除日志
+            missionLog.innerHTML = "任务完成，探测器已抵达。";
+          }
+        }
+      }
+
+      // 角度归一化辅助函数 (确保角度在 0 到 2*PI 之间)
+      const normalizeAngle = angle => (angle % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+
+      function launchProbe(targetKey) {
+        const earth = ORBITS['earth'];
+        const target = ORBITS[targetKey];
+
+        // 在发射时设置当前目标键，并禁用所有按钮
+        currentFlightTargetKey = targetKey;
+        disableButtons();
+
+        document.getElementById('flight-status').innerText = "飞行中 - 目标: " + target.name;
+        document.getElementById('flight-status').style.color = "#fbbf24";
+
+        // 飞行参数配置
+        const totalDays = target.launchTime; // 从行星数据中获取预设时间
+        // 根据距离调整动画时长，确保较远任务有更长的动画帧数
+        const flightDurationFrames = targetKey === 'neptune' ? 1000 : (targetKey === 'uranus' ? 800 : (targetKey === 'saturn' ? 600 : 400));
+
+        const stepSize = 1 / flightDurationFrames;
+
+        // --- 目标拦截角度计算逻辑 ---
+
+        // 1. 计算未来目标行星的位置
+        const planetAngularSpeed = 0.005 * target.speed;
+        const futureAngleOffset = planetAngularSpeed * flightDurationFrames;
+
+        // 归一化角度
+        const normStartAngle = normalizeAngle(earth.angle);
+        const normTargetCurrentAngle = normalizeAngle(target.angle);
+        const normTargetFutureAngle = normalizeAngle(normTargetCurrentAngle + futureAngleOffset);
+
+        // 2. 计算飞船所需的总转角 (Prograde shortest path to intercept angle)
+        let rawDelta = normTargetFutureAngle - normStartAngle;
+
+        // 强制顺行（逆时针）
+        while (rawDelta < 0) {
+          rawDelta += Math.PI * 2;
+        }
+
+        let totalDeltaAngle = rawDelta;
+
+        // 3. 修正/相位调整模拟: 
+        if (totalDeltaAngle < Math.PI) {
+          // 修正：增加一圈 (360度/2*PI)，模拟相位等待
+          totalDeltaAngle += Math.PI * 2;
+        }
+
+        // 创建探测器对象 - 存储 AU 半径
+        probes.push({
+          startR_au: earth.r,
+          targetR_au: target.r,
+          startAngle: earth.angle, // 真实起始角度
+          totalDeltaAngle: totalDeltaAngle, // 最终确定的总飞行角度
+          progress: 0,
+          stepSize: stepSize,
+          totalDays: totalDays,
+          targetKey: targetKey,
+          trail: []
+        });
+      }
+
+      function disableButtons() {
+        document.querySelectorAll('.btn').forEach(button => {
+          button.disabled = true;
+        });
+      }
+
+      function enableButtons() {
+        // 只重新启用可见的发射按钮
+        document.querySelectorAll('.btn').forEach(button => {
+          const targetKey = button.getAttribute('data-target');
+          if (planetVisibility[targetKey]) {
+            button.disabled = false;
+          }
+        });
+      }
+
+
+      // 启动UI和动画
+      resize();
+      initializeUI();
+      animate();
+    })();
+  </script>
+</body>
+
+</html>
