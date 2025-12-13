@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Kepler&#39;s Hand - Interactive Solar System        body {       margin: 0;       overflow: hidden;       background-color: #000;       font-family: &#39;Segoe UI&#39;, Roboto, Helvetica, Arial, sans-">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sydeny">
+<meta property="og:url" content="http://example.com/interactive-solor-system.html">
+<meta property="og:site_name" content="Sydeny">
+<meta property="og:description" content="Kepler&#39;s Hand - Interactive Solar System        body {       margin: 0;       overflow: hidden;       background-color: #000;       font-family: &#39;Segoe UI&#39;, Roboto, Helvetica, Arial, sans-">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-13T09:19:55.332Z">
+<meta property="article:modified_time" content="2025-12-13T09:19:55.332Z">
+<meta property="article:author" content="Sydeny">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon_my.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon_my.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_my.png">
+          
+        
+    
+    <!-- title -->
+    <title>Sydeny</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+    
+    
+    <div class="content index width mx-auto px2 my4">
+        
+          <header id="header">
+  <a href="/">
+  
+    
+      <div id="logo" style="background-image: url(/images/my-logo.png);"></div>
+    
+  
+    <div id="title">
+      <h1>Sydeny</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fa fa-bars fa-2x"></i></a>
+      </li>
+       
+        <li><a href="/">Home</a></li>
+       
+        <li><a href="/categories/">Category</a></li>
+       
+        <li><a href="/about/">About</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+  
+
+  <div class="content" itemprop="articleBody">
+    <!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kepler's Hand - Interactive Solar System</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* UI Overlay */
+    #ui-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      /* Let clicks pass through to 3D */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .header {
+      color: rgba(255, 255, 255, 0.8);
+      text-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+    }
+
+    h1 {
+      font-weight: 300;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    .status {
+      font-size: 0.9rem;
+      color: #00ffff;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #ff3333;
+      border-radius: 50%;
+      box-shadow: 0 0 5px #ff3333;
+      transition: background-color 0.3s;
+    }
+
+    .status-dot.active {
+      background-color: #33ff33;
+      box-shadow: 0 0 8px #33ff33;
+    }
+
+    .gesture-hint {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 5px;
+      letter-spacing: 1px;
+    }
+
+    .controls {
+      pointer-events: auto;
+      text-align: right;
+    }
+
+    button {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(5px);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #00ffff;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+
+    /* Loading & Debug Video */
+    #video-feed {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 160px;
+      height: 120px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      opacity: 0.5;
+      z-index: 3;
+      transform: scaleX(-1);
+      /* Mirror effect */
+      display: none;
+      /* Hidden by default, script can toggle */
+    }
+
+    #loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      pointer-events: none;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .hud-meter {
+      position: absolute;
+      right: 20px;
+      bottom: 100px;
+      width: 4px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .hud-fill {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to top, #00ffff, #ff00ff);
+      transition: height 0.1s;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .chaos-warning {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ff3333;
+      font-size: 5rem;
+      font-weight: bold;
+      opacity: 0;
+      pointer-events: none;
+      text-shadow: 0 0 20px red;
+      letter-spacing: 10px;
+      z-index: 5;
+      transition: opacity 0.1s;
+      mix-blend-mode: screen;
+    }
+
+    #time-status {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #00ffff;
+      font-size: 1.2rem;
+      letter-spacing: 4px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      text-shadow: 0 0 10px #00ffff;
+    }
+  </style>
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Post Processing -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+  <!-- MediaPipe Hands -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <div id="loading">INITIALIZING NEURAL LINK...<br><span style="font-size:0.8rem; opacity:0.7">Please allow camera
+      access</span></div>
+
+  <div id="canvas-container"></div>
+
+  <video id="video-feed" playsinline></video>
+
+  <div id="ui-layer">
+    <div class="header">
+      <h1>Kepler System</h1>
+      <div class="status">
+        <div class="status-dot" id="cam-status"></div>
+        <span id="status-text">Waiting for Hand Input...</span>
+      </div>
+      <div class="gesture-hint">
+        Move Hand: Rotate Camera | Pinch: Freeze Time | Open/Close: Expand/Contract
+      </div>
+    </div>
+
+    <div class="chaos-warning" id="chaos-text">CHAOS</div>
+    <div id="time-status">TIME DILATION ACTIVE</div>
+
+    <div class="hud-meter">
+      <div class="hud-fill" id="energy-bar"></div>
+    </div>
+
+    <div class="controls">
+      <button onclick="toggleFullScreen()">Full Screen</button>
+    </div>
+  </div>
+
+  <script>
+    // --- Configuration ---
+    const CONFIG = {
+      starCount: 8000,
+      camSpeed: 0.05,
+      baseOrbitSpeed: 0.2,
+      bloomStrength: 1.5,
+      bloomRadius: 0.4,
+      bloomThreshold: 0.1,
+      chaosThreshold: 0.85, // Scale (0-1) where chaos starts
+      chaosIntensity: 0.8 // How crazy it gets
+    };
+
+    // --- Global State ---
+    let scene, camera, renderer, composer;
+    let planets = [];
+    let sun, starField;
+    let time = 0;
+
+    // Interaction State
+    let targetScale = 0; // 0 = zoomed out (closed hand), 1 = zoomed in (open hand)
+    let currentScale = 0;
+
+    // New Interaction States
+    let handX = 0.5; // 0 to 1 (screen coordinates)
+    let handY = 0.5; // 0 to 1
+    let isPinching = false;
+    let timeMultiplier = 1.0;
+
+    let handDetected = false;
+    let chaosMode = false;
+
+    // --- 1. Three.js Setup ---
+    function initThree() {
+      const container = document.getElementById('canvas-container');
+
+      // Scene
+      scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x000000, 0.002);
+
+      // Camera
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+      camera.position.set(0, 30, 60);
+      camera.lookAt(0, 0, 0);
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.toneMapping = THREE.ReinhardToneMapping;
+      container.appendChild(renderer.domElement);
+
+      // Post-Processing (Bloom)
+      const renderScene = new THREE.RenderPass(scene, camera);
+      const bloomPass = new THREE.UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        1.5, 0.4, 0.85
+      );
+      bloomPass.threshold = CONFIG.bloomThreshold;
+      bloomPass.strength = CONFIG.bloomStrength;
+      bloomPass.radius = CONFIG.bloomRadius;
+
+      composer = new THREE.EffectComposer(renderer);
+      composer.addPass(renderScene);
+      composer.addPass(bloomPass);
+
+      // Resize Listener
+      window.addEventListener('resize', onWindowResize, false);
+
+      createUniverse();
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // --- 2. Create Content ---
+
+    function createUniverse() {
+      // A. Starfield
+      const starGeometry = new THREE.BufferGeometry();
+      const starPositions = [];
+      const starColors = [];
+      const color = new THREE.Color();
+
+      for (let i = 0; i < CONFIG.starCount; i++) {
+        const x = (Math.random() - 0.5) * 2000;
+        const y = (Math.random() - 0.5) * 2000;
+        const z = (Math.random() - 0.5) * 2000;
+        starPositions.push(x, y, z);
+
+        // Slightly blueish/white stars
+        color.setHSL(Math.random() * 0.2 + 0.5, 0.8, Math.random() * 0.5 + 0.5);
+        starColors.push(color.r, color.g, color.b);
+      }
+
+      starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+      starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+
+      const starMaterial = new THREE.PointsMaterial({
+        size: 1.5,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8
+      });
+
+      starField = new THREE.Points(starGeometry, starMaterial);
+      scene.add(starField);
+
+      // B. Sun
+      const sunGeometry = new THREE.SphereGeometry(5, 64, 64);
+      const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffddaa });
+      sun = new THREE.Mesh(sunGeometry, sunMaterial);
+      // Add strong light
+      const sunLight = new THREE.PointLight(0xffaa00, 2, 500);
+      sun.add(sunLight);
+      scene.add(sun);
+
+      // C. Planets (Simplified Solar System)
+      // [Name, Color, Size, Distance, Speed(Kepler logic relative)]
+      const planetData = [
+        { name: "Mercury", color: 0xaaaaaa, size: 0.8, dist: 10, speed: 4.7 },
+        { name: "Venus", color: 0xffaa00, size: 1.2, dist: 15, speed: 3.5 },
+        { name: "Earth", color: 0x2233ff, size: 1.3, dist: 22, speed: 2.9 },
+        { name: "Mars", color: 0xff3300, size: 0.9, dist: 30, speed: 2.4 },
+        { name: "Jupiter", color: 0xdcae96, size: 3.5, dist: 45, speed: 1.3 },
+        { name: "Saturn", color: 0xf5d576, size: 3.0, dist: 60, speed: 0.9, hasRing: true },
+        { name: "Uranus", color: 0x66ccff, size: 2.0, dist: 75, speed: 0.6 },
+        { name: "Neptune", color: 0x3333ff, size: 1.9, dist: 90, speed: 0.5 }
+      ];
+
+      planetData.forEach(data => {
+        const planetGroup = new THREE.Group();
+
+        // Planet Mesh
+        const geometry = new THREE.SphereGeometry(data.size, 32, 32);
+        const material = new THREE.MeshStandardMaterial({
+          color: data.color,
+          roughness: 0.7,
+          metalness: 0.2
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+
+        // Saturn's Ring
+        if (data.hasRing) {
+          const ringGeo = new THREE.RingGeometry(data.size * 1.4, data.size * 2.2, 32);
+          const ringMat = new THREE.MeshBasicMaterial({
+            color: 0xaa9977,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.6
+          });
+          const ring = new THREE.Mesh(ringGeo, ringMat);
+          ring.rotation.x = Math.PI / 2;
+          mesh.add(ring);
+        }
+
+        planetGroup.add(mesh);
+        scene.add(planetGroup);
+
+        // Orbit Path (Visual Line)
+        const orbitGeo = new THREE.RingGeometry(data.dist - 0.1, data.dist + 0.1, 128);
+        const orbitMat = new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.1, transparent: true, side: THREE.DoubleSide });
+        const orbitMesh = new THREE.Mesh(orbitGeo, orbitMat);
+        orbitMesh.rotation.x = Math.PI / 2;
+        scene.add(orbitMesh);
+
+        planets.push({
+          mesh: planetGroup,
+          orbit: orbitMesh, // Keep ref to scale/hide later
+          baseDist: data.dist,
+          baseSpeed: data.speed * 0.005, // normalize speed
+          angle: Math.random() * Math.PI * 2,
+          originalSize: data.size,
+          data: data
+        });
+      });
+
+      // Ambient Light
+      const ambientLight = new THREE.AmbientLight(0x222222);
+      scene.add(ambientLight);
+    }
+
+    // --- 3. Animation Logic ---
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Time Control
+      // If pinching, time slows to near zero (0.05), else normal (1.0)
+      const targetTimeMult = isPinching ? 0.02 : 1.0;
+      timeMultiplier = lerp(timeMultiplier, targetTimeMult, 0.1);
+
+      time += 1 * timeMultiplier;
+
+      // UI for Time Status
+      const timeStatusEl = document.getElementById('time-status');
+      timeStatusEl.style.opacity = isPinching ? 1 : 0;
+
+      // Smoothly interpolate current scale to target scale (Hand control)
+      // Use a small lerp factor for weight, making movements feel heavy/majestic
+      currentScale = lerp(currentScale, targetScale, 0.05);
+
+      // Visual "Energy" Bar
+      document.getElementById('energy-bar').style.height = `${currentScale * 100}%`;
+
+      // Determine Chaos
+      const chaosFactor = Math.max(0, (currentScale - CONFIG.chaosThreshold) / (1 - CONFIG.chaosThreshold));
+      chaosMode = chaosFactor > 0;
+
+      // Update UI Text
+      const chaosText = document.getElementById('chaos-text');
+      if (chaosMode) {
+        chaosText.style.opacity = Math.random() * chaosFactor + 0.5;
+        chaosText.style.transform = `translate(-50%, -50%) scale(${1 + Math.random() * 0.1})`;
+      } else {
+        chaosText.style.opacity = 0;
+      }
+
+      // --- PLANET PHYSICS & ANIMATION ---
+      planets.forEach(p => {
+        // 1. Keplerian Orbit Logic
+        // Advance angle based on speed AND time multiplier
+        p.angle += p.baseSpeed * timeMultiplier;
+
+        // 2. Position Calculation
+        // Normal orbit position
+        let x = Math.cos(p.angle) * p.baseDist;
+        let z = Math.sin(p.angle) * p.baseDist;
+
+        // 3. Apply Hand Control (Scale/Zoom)
+        const expansion = 1 + (currentScale * 2); // 1x to 3x distance
+
+        x *= expansion;
+        z *= expansion;
+
+        // 4. CHAOS MECHANIC
+        if (chaosMode) {
+          // Browninan motion jitter
+          const jitter = CONFIG.chaosIntensity * chaosFactor * 2.0;
+          x += (Math.random() - 0.5) * jitter;
+          z += (Math.random() - 0.5) * jitter;
+
+          // Vertical noise (breaking the orbital plane)
+          p.mesh.position.y = (Math.random() - 0.5) * jitter;
+
+          // Random rotation
+          p.mesh.rotation.x += Math.random() * 0.2;
+          p.mesh.rotation.z += Math.random() * 0.2;
+        } else {
+          // Return to plane smoothly
+          p.mesh.position.y = lerp(p.mesh.position.y, 0, 0.1);
+          p.mesh.rotation.x = 0;
+          p.mesh.rotation.z = 0;
+        }
+
+        p.mesh.position.x = x;
+        p.mesh.position.z = z;
+
+        // Scale up planets slightly when expanded so they don't disappear
+        const sizeScale = 1 + (currentScale * 0.5);
+        p.mesh.scale.set(sizeScale, sizeScale, sizeScale);
+
+        // Orbit Rings Opacity
+        if (p.orbit) {
+          p.orbit.scale.set(expansion, expansion, 1);
+          p.orbit.material.opacity = Math.max(0, 0.1 - chaosFactor);
+        }
+      });
+
+      // --- CAMERA CONTROL (New) ---
+      // handX maps 0..1 -> angle -Math.PI to Math.PI (Rotation around Y)
+      // handY maps 0..1 -> height 10 to 100 (Rotation around X/Elevation)
+
+      // Target Camera State
+      let targetCamX = 0;
+      let targetCamZ = 60;
+      let targetCamY = 30;
+
+      if (handDetected) {
+        // Map hand X (0-1) to rotation angle (-120deg to +120deg)
+        // Note: MediaPipe X is mirrored usually, 0 is left. 
+        // Let's center it: (handX - 0.5) * range
+        const rotAngle = (handX - 0.5) * 4.0; // +/- 2 radians
+        const radius = 60;
+
+        targetCamX = Math.sin(rotAngle) * radius;
+        targetCamZ = Math.cos(rotAngle) * radius;
+
+        // Map hand Y (0-1) to elevation (0 is top, 1 is bottom)
+        // We want top screen = high camera (look down), bottom screen = low camera (level view)
+        // Y is 0 at top. 
+        // Hand Top (0) -> Height 80
+        // Hand Bottom (1) -> Height 5
+        targetCamY = 5 + (1 - handY) * 100;
+      } else {
+        // Auto drift if no hand
+        const camTime = Date.now() * 0.0001;
+        targetCamX = Math.sin(camTime) * 10;
+        targetCamZ = 60 + Math.cos(camTime) * 10;
+        targetCamY = 30;
+      }
+
+      // Smooth Camera Movement
+      camera.position.x = lerp(camera.position.x, targetCamX, 0.05);
+      camera.position.z = lerp(camera.position.z, targetCamZ, 0.05);
+      camera.position.y = lerp(camera.position.y, targetCamY, 0.05);
+
+      camera.lookAt(0, 0, 0);
+
+      // Sun Pulse
+      if (chaosMode) {
+        sun.scale.setScalar(1 + Math.random() * 0.2);
+        bloomPass = composer.passes[1];
+        bloomPass.strength = CONFIG.bloomStrength + (Math.random() * 2);
+      } else {
+        sun.scale.setScalar(1);
+        composer.passes[1].strength = CONFIG.bloomStrength;
+      }
+
+      composer.render();
+    }
+
+    function lerp(start, end, amt) {
+      return (1 - amt) * start + amt * end;
+    }
+
+    // --- 4. MediaPipe Hand Tracking ---
+
+    function onResults(results) {
+      document.getElementById('loading').style.display = 'none';
+      const statusDot = document.getElementById('cam-status');
+      const statusText = document.getElementById('status-text');
+
+      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+        handDetected = true;
+        statusDot.classList.add('active');
+        statusText.innerText = "LINK ESTABLISHED";
+
+        const landmarks = results.multiHandLandmarks[0];
+
+        // --- GESTURE 1: EXPANSION (Openness) ---
+        const wrist = landmarks[0];
+        const tips = [4, 8, 12, 16, 20]; // Thumb, Index, Middle, Ring, Pinky
+        let totalDist = 0;
+        tips.forEach(idx => {
+          const tip = landmarks[idx];
+          const d = Math.sqrt(Math.pow(tip.x - wrist.x, 2) + Math.pow(tip.y - wrist.y, 2));
+          totalDist += d;
+        });
+        const avgDist = totalDist / 5;
+        const minVal = 0.2; // Fist
+        const maxVal = 0.5; // Open
+        let rawVal = (avgDist - minVal) / (maxVal - minVal);
+        targetScale = Math.max(0, Math.min(1, rawVal));
+
+        // --- GESTURE 2: CAMERA CONTROL (Hand Position) ---
+        // Use Middle Finger MCP (Joint 9) as the stable center of the hand
+        const handCenter = landmarks[9];
+        handX = 1 - handCenter.x; // Mirror X for intuitive control
+        handY = handCenter.y;
+
+        // --- GESTURE 3: TIME DILATION (Pinch) ---
+        // Check distance between Index Tip (8) and Thumb Tip (4)
+        const p1 = landmarks[4]; // Thumb
+        const p2 = landmarks[8]; // Index
+        const pinchDist = Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+
+        // Threshold for pinch
+        isPinching = pinchDist < 0.05;
+
+      } else {
+        handDetected = false;
+        statusDot.classList.remove('active');
+        statusText.innerText = "NO SIGNAL - SEARCHING HAND...";
+        targetScale = lerp(targetScale, 0.2, 0.01);
+        isPinching = false;
+      }
+    }
+
+    const videoElement = document.getElementById('video-feed');
+
+    const hands = new Hands({
+      locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+      }
+    });
+
+    hands.setOptions({
+      maxNumHands: 1,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5
+    });
+
+    hands.onResults(onResults);
+
+    const cameraUtils = new Camera(videoElement, {
+      onFrame: async () => {
+        await hands.send({ image: videoElement });
+      },
+      width: 640,
+      height: 480
+    });
+
+    // --- Initialization & Fallback ---
+
+    // Start Three.js
+    initThree();
+    animate();
+
+    // Start Camera
+    cameraUtils.start().catch(err => {
+      console.error("Camera failed", err);
+      document.getElementById('status-text').innerText = "CAMERA ERROR - MOUSE MODE";
+
+      // Fallback: Mouse position controls scale
+      window.addEventListener('mousemove', (e) => {
+        const y = 1 - (e.clientY / window.innerHeight);
+        const x = e.clientX / window.innerWidth;
+        targetScale = y; // Vertical for scale
+        handX = x;       // Horizontal for cam
+        handDetected = true; // Force detect
+      });
+      // Click to pinch
+      window.addEventListener('mousedown', () => isPinching = true);
+      window.addEventListener('mouseup', () => isPinching = false);
+    });
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+  </script>
+</body>
+
+</html>
+  </div>
+</article>
+
+    </div>
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2025 Sydeny ,<br />
+    Powered by the Hexo's theme of
+    <a target="_blank" rel="noopener" href="https://github.com/sergodeeva/cactus-white"> cacuts-white </a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+        <li><a href="/">Home</a></li>
+        
+        <li><a href="/categories/">Category</a></li>
+        
+        <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-37473492-6', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+
